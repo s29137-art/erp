@@ -2,7 +2,6 @@ import { useEffect, useId, useRef, useState } from "react";
 import type { LucideIcon } from "lucide-react";
 import {
   ArrowRight,
-  Sparkles,
   Landmark,
   TrendingUp,
   ArrowLeftRight,
@@ -12,7 +11,6 @@ import {
   CheckCircle2,
   Users,
   Package,
-  Bell,
   ShoppingBag,
   Target,
   Settings,
@@ -24,239 +22,156 @@ import {
   LayoutDashboard,
 } from "lucide-react";
 
+const FEATURES = [
+  {
+    icon: Landmark,
+    title: "Финансы по уму",
+    text: "ДДС, ОПиУ и платёжный календарь по методологии профессионального финансиста — в каждом шаблоне.",
+  },
+  {
+    icon: Users,
+    title: "CRM и продажи",
+    text: "Клиенты, сделки, воронка и планы по менеджерам — вся работа отдела продаж в одном месте.",
+  },
+  {
+    icon: Package,
+    title: "Склад и закупки",
+    text: "Остатки по FIFO, контроль минимальных остатков и закупки без пересортицы и хаоса.",
+  },
+];
+
 export default function LandingStep({ onStart }: { onStart: () => void }) {
   return (
-    <div className="relative min-h-screen overflow-x-hidden bg-slate-50">
-      {/* Градиентное свечение фона */}
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute -top-40 left-1/2 -translate-x-1/2 h-[520px] w-[820px] rounded-full bg-gradient-to-br from-brand-500/30 via-sky-400/20 to-cyan-300/20 blur-3xl" />
-        <div className="absolute top-72 -right-32 h-[380px] w-[380px] rounded-full bg-gradient-to-br from-violet-400/20 to-brand-500/10 blur-3xl" />
-      </div>
+    <div className="relative min-h-screen overflow-x-hidden bg-white">
+      {/* Очень мягкое свечение вверху — без визуального шума */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[680px] bg-gradient-to-b from-brand-50/80 via-white to-white" />
+      <div className="pointer-events-none absolute -top-48 left-1/2 -translate-x-1/2 h-[440px] w-[760px] rounded-full bg-brand-200/30 blur-3xl" />
 
       {/* Навбар */}
-      <header className="relative z-10">
-        <div className="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-2">
+      <header className="relative z-10 border-b border-slate-100">
+        <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+          <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-lg bg-brand-600 text-white flex items-center justify-center font-bold">
               E
             </div>
-            <span className="font-semibold text-lg">Конструктор финансовых учётных записей</span>
+            <span className="font-semibold text-[15px] sm:text-base text-slate-900">
+              Конструктор учёта
+            </span>
           </div>
           <button
             onClick={onStart}
-            className="cta-button group relative overflow-hidden hidden sm:inline-flex items-center gap-1.5 rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white transition-transform duration-200 hover:scale-105 hover:bg-brand-700 active:scale-95"
+            className="inline-flex items-center gap-1.5 rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-800 active:scale-95"
           >
-            <span className="relative z-10 inline-flex items-center gap-1.5">
-              Начать
-              <ArrowRight size={15} className="transition-transform group-hover:translate-x-1" />
-            </span>
+            Войти
+            <ArrowRight size={15} />
           </button>
         </div>
       </header>
 
-      {/* Hero */}
       <main className="relative z-10 max-w-6xl mx-auto px-6">
-        <div className="pt-4 sm:pt-6" />
-
-        {/* 3D-параллакс-сцена с каруселью больших слайдов в центре */}
-        <ParallaxScene />
-
-        {/* Описание и призыв под каруселью */}
-        <div className="text-center pt-4">
-          <div className="inline-flex items-center gap-2 rounded-full bg-white/70 backdrop-blur border border-slate-200 px-4 py-1.5 text-sm text-slate-600 shadow-sm">
-            <Sparkles size={14} className="text-brand-600" />
-            Финучёт, CRM, склад и отрасль — в одной системе
+        {/* ── Скриншот продукта наверху — вместо текстового героя ── */}
+        <section className="relative pt-6 sm:pt-8 pb-10">
+          <div className="pointer-events-none absolute -inset-x-10 -top-4 bottom-10 bg-gradient-to-b from-brand-200/25 to-transparent blur-2xl" />
+          <div className="relative mx-auto max-w-4xl">
+            <CarouselWindow />
           </div>
-          <p className="mt-4 text-base text-slate-500 max-w-2xl mx-auto">
-            Выберите шаблон бизнеса, включите нужные модули и запустите готовую систему
-            учёта с дашбордами, отчётами ДДС и ОПиУ. Всё настраивается мышкой.
-          </p>
+        </section>
 
-          <div className="mt-6 flex items-center justify-center">
+        {/* ── Призыв под дашбордом ── */}
+        <section className="text-center pb-14">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <button
               onClick={onStart}
-              className="cta-button group relative overflow-hidden inline-flex items-center gap-2 rounded-xl bg-brand-600 px-8 py-4 text-lg font-semibold text-white transition-transform duration-200 hover:scale-[1.03] hover:bg-brand-700 active:scale-95"
+              className="group inline-flex items-center justify-center gap-2 rounded-xl bg-brand-600 px-7 py-3.5 text-base font-semibold text-white shadow-lg shadow-brand-600/25 transition hover:bg-brand-700 hover:shadow-xl hover:shadow-brand-600/30 active:scale-95 w-full sm:w-auto"
             >
-              <span className="relative z-10 inline-flex items-center gap-2">
-                Создать свою систему учёта
-                <ArrowRight
-                  size={20}
-                  className="transition-transform group-hover:translate-x-1"
-                />
-              </span>
+              Создать свою систему
+              <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
+            </button>
+            <button
+              onClick={onStart}
+              className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-7 py-3.5 text-base font-semibold text-slate-700 transition hover:border-slate-400 hover:bg-slate-50 active:scale-95 w-full sm:w-auto"
+            >
+              У меня уже есть аккаунт
             </button>
           </div>
-          <div className="mt-3 text-xs text-slate-400">
-            Бесплатно · без карты · запуск за 15 минут
-          </div>
-        </div>
 
-        {/* Цифры */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mx-auto mt-6">
+          <div className="mt-5 flex flex-wrap items-center justify-center gap-x-5 gap-y-1.5 text-sm text-slate-400">
+            <span className="inline-flex items-center gap-1.5">
+              <CheckCircle2 size={15} className="text-emerald-500" /> Бесплатно
+            </span>
+            <span className="inline-flex items-center gap-1.5">
+              <CheckCircle2 size={15} className="text-emerald-500" /> Без карты
+            </span>
+            <span className="inline-flex items-center gap-1.5">
+              <CheckCircle2 size={15} className="text-emerald-500" /> Запуск за 15 минут
+            </span>
+          </div>
+        </section>
+
+        {/* ── Цифры ── */}
+        <section className="grid grid-cols-2 sm:grid-cols-4 gap-px overflow-hidden rounded-2xl border border-slate-200 bg-slate-200 max-w-4xl mx-auto">
           {[
             { value: "6", label: "готовых шаблонов" },
             { value: "23", label: "модуля на выбор" },
             { value: "5", label: "шагов до запуска" },
             { value: "0", label: "строк кода" },
           ].map((s) => (
-            <div
-              key={s.label}
-              className="rounded-2xl bg-white/70 backdrop-blur border border-slate-200 px-4 py-4 shadow-sm text-center"
-            >
-              <div className="text-3xl font-bold text-slate-900">{s.value}</div>
-              <div className="text-xs text-slate-500 mt-0.5">{s.label}</div>
+            <div key={s.label} className="bg-white px-4 py-6 text-center">
+              <div className="text-3xl sm:text-4xl font-bold text-slate-900">{s.value}</div>
+              <div className="text-xs text-slate-500 mt-1">{s.label}</div>
             </div>
           ))}
-        </div>
+        </section>
 
-        <p className="text-center text-sm text-slate-400 pb-16 mt-10">
-          Финансовый учёт по методологии профессионального финансиста (ДДС, ОПиУ,
-          платёжный календарь) входит в каждый шаблон.
-        </p>
+        {/* ── Преимущества ── */}
+        <section className="py-20">
+          <div className="text-center max-w-2xl mx-auto mb-12">
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">
+              Всё, что нужно для учёта — из коробки
+            </h2>
+            <p className="mt-3 text-slate-500">
+              Финансы, продажи и склад работают вместе. Включайте только то, что нужно
+              вашему бизнесу.
+            </p>
+          </div>
+          <div className="grid sm:grid-cols-3 gap-5">
+            {FEATURES.map((f) => (
+              <div
+                key={f.title}
+                className="rounded-2xl border border-slate-200 bg-white p-6 transition hover:border-slate-300 hover:shadow-lg hover:shadow-slate-200/60"
+              >
+                <div className="w-11 h-11 rounded-xl bg-brand-50 text-brand-600 grid place-items-center mb-4">
+                  <f.icon size={22} />
+                </div>
+                <div className="font-semibold text-slate-900 text-lg">{f.title}</div>
+                <p className="mt-2 text-sm text-slate-500 leading-relaxed">{f.text}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* ── Финальный призыв ── */}
+        <section className="pb-24">
+          <div className="relative overflow-hidden rounded-3xl bg-slate-900 px-6 py-14 sm:py-16 text-center">
+            <div className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 h-72 w-[640px] rounded-full bg-brand-500/25 blur-3xl" />
+            <div className="relative">
+              <h2 className="text-2xl sm:text-3xl font-bold text-white">
+                Запустите свою систему учёта сегодня
+              </h2>
+              <p className="mt-3 text-slate-300 max-w-xl mx-auto">
+                15 минут на настройку — и готовый дашборд с финансами, продажами и складом.
+              </p>
+              <button
+                onClick={onStart}
+                className="group mt-8 inline-flex items-center gap-2 rounded-xl bg-white px-7 py-3.5 text-base font-semibold text-slate-900 transition hover:bg-slate-100 active:scale-95"
+              >
+                Создать свою систему
+                <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
+              </button>
+            </div>
+          </div>
+        </section>
       </main>
-    </div>
-  );
-}
-
-/* ─────────────────────────────────────────────────────────────
-   Параллакс-сцена: в центре — карусель из 4 больших дашбордов
-   (листается налево/направо), вокруг — плавающие панели на разной
-   глубине (translateZ + blur = depth-of-field). При скролле слои
-   сдвигаются с разной скоростью, курсор слегка наклоняет сцену.
-   ───────────────────────────────────────────────────────────── */
-function ParallaxScene() {
-  const ref = useRef<HTMLDivElement>(null);
-  const [p, setP] = useState(0); // смещение центра сцены от центра экрана, px
-  const [tilt, setTilt] = useState({ x: 0, y: 0 }); // наклон за мышью, deg
-
-  useEffect(() => {
-    let raf = 0;
-    const update = () => {
-      raf = 0;
-      const el = ref.current;
-      if (!el) return;
-      const rect = el.getBoundingClientRect();
-      setP(rect.top + rect.height / 2 - window.innerHeight / 2);
-    };
-    const onScroll = () => {
-      if (!raf) raf = requestAnimationFrame(update);
-    };
-    update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-      if (raf) cancelAnimationFrame(raf);
-    };
-  }, []);
-
-  const onMove = (e: React.MouseEvent) => {
-    const el = ref.current;
-    if (!el) return;
-    const r = el.getBoundingClientRect();
-    const cx = (e.clientX - r.left) / r.width - 0.5;
-    const cy = (e.clientY - r.top) / r.height - 0.5;
-    setTilt({ x: -cy * 4, y: cx * 6 });
-  };
-
-  const layer = (speed: number, z: number): React.CSSProperties => ({
-    transform: `translate3d(0, ${(p * speed).toFixed(1)}px, ${z}px)`,
-    willChange: "transform",
-  });
-
-  return (
-    <>
-      {/* Мобильные и планшеты: карусель в обычном потоке — ничего не наезжает */}
-      <div className="lg:hidden mt-4 w-full max-w-[640px] mx-auto">
-        <CarouselWindow />
-      </div>
-
-      {/* Десктоп (lg+): полноценная 3D-параллакс-сцена с плавающими панелями */}
-      <div
-        ref={ref}
-        onMouseMove={onMove}
-        onMouseLeave={() => setTilt({ x: 0, y: 0 })}
-        className="relative hidden lg:block h-[520px] [perspective:1700px]"
-      >
-      <div
-        className="absolute inset-0 [transform-style:preserve-3d] transition-transform duration-200 ease-out"
-        style={{
-          transform: `rotateX(${(6 + tilt.x).toFixed(2)}deg) rotateY(${(-7 + tilt.y).toFixed(2)}deg)`,
-        }}
-      >
-        {/* ── Дальние панели (медленный параллакс, размытие) ── */}
-        <FloatPanel
-          className="hidden lg:block left-[-30px] top-[30px] w-60 blur-[2px] opacity-90"
-          style={layer(0.07, -260)}
-        >
-          <ProfitCard />
-        </FloatPanel>
-        <FloatPanel
-          className="hidden lg:block right-[-20px] top-[10px] w-64 blur-[1.5px] opacity-95"
-          style={layer(0.1, -200)}
-        >
-          <MiniBarsCard />
-        </FloatPanel>
-        <FloatPanel
-          className="hidden xl:block right-[40px] bottom-[30px] w-56 blur-[1px]"
-          style={layer(0.13, -120)}
-        >
-          <PayReminderCard />
-        </FloatPanel>
-
-        {/* ── Центральная карусель в фокусе ── */}
-        <div
-          className="absolute left-1/2 top-1/2 w-[660px]"
-          style={{
-            transform: `translate(-50%, -50%) translate3d(0, ${(p * 0.03).toFixed(1)}px, 60px)`,
-            willChange: "transform",
-          }}
-        >
-          <CarouselWindow />
-        </div>
-
-        {/* ── Ближние панели (быстрый параллакс, чёткие) ── */}
-        <FloatPanel
-          className="hidden lg:block left-[0px] bottom-[40px] w-60 z-30"
-          style={layer(0.2, 150)}
-        >
-          <PaidToast />
-        </FloatPanel>
-        <FloatPanel
-          className="hidden lg:block right-[-40px] bottom-[110px] w-56 z-30"
-          style={layer(0.17, 120)}
-        >
-          <ClientCard />
-        </FloatPanel>
-        <FloatPanel
-          className="hidden xl:block left-[60px] top-[0px] w-52 z-20"
-          style={layer(0.15, 100)}
-        >
-          <StockAlertCard />
-        </FloatPanel>
-      </div>
-      </div>
-    </>
-  );
-}
-
-/* Обёртка плавающей панели */
-function FloatPanel({
-  className,
-  style,
-  children,
-}: {
-  className?: string;
-  style?: React.CSSProperties;
-  children: React.ReactNode;
-}) {
-  return (
-    <div
-      className={`absolute rounded-2xl bg-white/90 backdrop-blur border border-slate-200 shadow-xl shadow-slate-300/30 p-4 ${className ?? ""}`}
-      style={style}
-    >
-      {children}
     </div>
   );
 }
@@ -624,81 +539,6 @@ function ReportsScreen() {
   );
 }
 
-/* ── Плавающие панели вокруг ── */
-function ProfitCard() {
-  return (
-    <>
-      <div className="flex items-center gap-2 text-xs text-slate-400">
-        <TrendingUp size={13} className="text-emerald-500" /> Чистая прибыль
-      </div>
-      <div className="text-2xl font-bold text-slate-900 mt-1">880 000 ₸</div>
-      <div className="text-xs text-emerald-500 mt-0.5">маржа 31% · +12%</div>
-    </>
-  );
-}
-function MiniBarsCard() {
-  return (
-    <>
-      <div className="flex items-center gap-2 text-xs text-slate-400 mb-2">
-        <CalendarDays size={13} className="text-brand-600" /> Выручка по дням
-      </div>
-      <Bars bars={[40, 65, 50, 80, 60, 92, 70]} small />
-    </>
-  );
-}
-function PayReminderCard() {
-  return (
-    <>
-      <div className="flex items-center gap-2 text-xs text-slate-400">
-        <Bell size={13} className="text-amber-500" /> Платёжный календарь
-      </div>
-      <div className="mt-2 text-sm text-slate-700 font-medium">Зарплата · 10 число</div>
-      <div className="text-xs text-slate-400">1 200 000 ₸ запланировано</div>
-    </>
-  );
-}
-function PaidToast() {
-  return (
-    <div className="flex items-center gap-3">
-      <div className="w-9 h-9 rounded-full bg-emerald-100 flex items-center justify-center">
-        <CheckCircle2 size={18} className="text-emerald-600" />
-      </div>
-      <div>
-        <div className="text-sm font-semibold text-slate-900">Платёж проведён</div>
-        <div className="text-xs text-slate-400">Заказ #1042 · 320 000 ₸</div>
-      </div>
-    </div>
-  );
-}
-function ClientCard() {
-  return (
-    <div className="flex items-center gap-3">
-      <div className="w-9 h-9 rounded-full bg-gradient-to-br from-brand-500 to-sky-400 flex items-center justify-center text-white font-semibold">
-        А
-      </div>
-      <div>
-        <div className="text-sm font-semibold text-slate-900 flex items-center gap-1.5">
-          Айгерим <Users size={12} className="text-slate-300" />
-        </div>
-        <div className="text-xs text-slate-400">Новый клиент · CRM</div>
-      </div>
-    </div>
-  );
-}
-function StockAlertCard() {
-  return (
-    <>
-      <div className="flex items-center gap-2 text-xs text-slate-400">
-        <Package size={13} className="text-amber-500" /> Склад
-      </div>
-      <div className="mt-1 text-sm text-slate-700">
-        <span className="font-bold text-amber-600">7 позиций</span> заканчивается
-      </div>
-      <div className="text-xs text-slate-400">ниже минимального остатка</div>
-    </>
-  );
-}
-
 /* ── Переиспользуемые блоки ── */
 interface Kpi {
   icon: LucideIcon;
@@ -770,33 +610,6 @@ function Rows({ rows }: { rows: { left: string; right: string }[] }) {
     </>
   );
 }
-function Bars({ bars, small }: { bars: number[]; small?: boolean }) {
-  const days = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
-  return (
-    <div>
-      <div className={`flex items-end gap-1.5 ${small ? "h-16" : "h-24"}`}>
-        {bars.map((h, i) => (
-          <div key={i} className="flex-1 flex flex-col justify-end">
-            <div
-              className="rounded-t-md bg-gradient-to-t from-brand-600 to-sky-400"
-              style={{ height: `${h}%` }}
-            />
-          </div>
-        ))}
-      </div>
-      {!small && (
-        <div className="flex gap-1.5 mt-1.5">
-          {bars.map((_, i) => (
-            <div key={i} className="flex-1 text-center text-[9px] text-slate-400">
-              {days[i % days.length]}
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-}
-
 /* Плавный area-график (SVG) для денежного потока */
 function AreaChart({ points }: { points: number[] }) {
   const gid = useId();
